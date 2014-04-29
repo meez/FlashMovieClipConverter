@@ -1,5 +1,5 @@
-#Path to Flex SDK
+# Path to Flex SDK
 flexsdk.home=
 
-#Path mobile lib root
-lib.root=
+# Starling 
+starling.home=[Path to PrimaryFeather/Starling-Framework]
