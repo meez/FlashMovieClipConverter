@@ -88,7 +88,7 @@
     <element name="extra-args" implicit="yes" optional="true"/>
     <sequential>
         <!-- Run compiler -->
-        <exec executable="@{sdkPath}/bin/compc${exe}" failonerror="true">
+        <exec executable="@{sdkPath}/bin/compc${bat}" failonerror="true">
             <arg value='-load-config+=@{configXML}'/>
             <arg line='-source-path @{src}'/>
             <arg line='-include-sources @{src}'/>

@@ -44,7 +44,11 @@ package ssmit
 			bitmapData.draw( displayObject, matrix );
 			
 			// Generate a CRC for the bitmap. (Could use MD5 here, but it's super slow... and the chances of a collision are pretty low.)
-			var crc:uint = CRC.getCRC( bitmapData.getPixels( new Rectangle( 0, 0, Math.min( bitmapData.width, 100 ), Math.min( bitmapData.height, 100 ) ) ) ); 
+            
+            // Use non-transparent area to generate CRC - but not an empty rect
+            var r:Rectangle=bitmapData.getColorBoundsRect(0xFF000000, 0x00000000, false);
+            r = r.isEmpty() ? new Rectangle(0, 0, 50, 50) : r;
+			var crc:uint = CRC.getCRC(bitmapData.getPixels(new Rectangle(r.x, r.y, Math.min(r.width, 100), Math.min(r.height, 100)))); 
 			
 			// Check if this bitmap has already been added..
 			var info:BitmapInfo = findBitmapInfo( bitmapData.width, bitmapData.height, crc );
