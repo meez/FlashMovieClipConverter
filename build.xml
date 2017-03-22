@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
-<project name="mcconverter" basedir="." default="all">
+<project name="mcconverter" basedir="." default="all" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
 
 <property file="build.properties"/>
+<property file="project.properties"/>    
 <property name="deploy.dir" location="build"/>
 <property name="src.dir" location="src" />
 <property name="config.xml" location="resources/swc/config.xml"/>
@@ -26,10 +27,29 @@
 		debug="false"
 		sdkConfig="air"
 		sdkPath="${flexsdk.home}"
-		output="${deploy.dir}/${ant.project.name}.swc">
+		output="${deploy.dir}/${project.artifactId}-${project.version}.swc">
 		<arg line="-external-library-path+=${starling.home}/starling/bin/starling.swc"/>
 	</compc>
 
 </target>
+    
+<!-- Repository -->
+<target name="install">
+
+    <artifact:pom
+            id="ane.pom"
+            groupId="${project.groupId}"
+            artifactId="${project.artifactId}"
+            version="${project.version}"
+            packaging="swc">
+    </artifact:pom>
+
+    <!-- Workaround for https://jira.codehaus.org/browse/MANTTASKS-170 -->
+    <artifact:writepom pomRefId="ane.pom" file="${deploy.dir}/${project.artifactId}-pom.xml"/>
+    <artifact:pom id="build.pom" file="${deploy.dir}/${project.artifactId}-pom.xml"/>
+
+    <artifact:install file="${deploy.dir}/${project.artifactId}-${project.version}.swc" pomRefId="build.pom"/>
+
+</target>    
 	
 </project>
